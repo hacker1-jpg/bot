@@ -1,37 +1,99 @@
-import tkinter as tk
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Site</title>
+    <!-- Google Fonts for a cool look -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Reset margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-class ButtonGenerator:
-    def __init__(self):
-        self.root = tk.Tk()
-        self.root.title("Button Generator")
-        self.create_widgets()
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
 
-    def create_widgets(self):
-        self.button_frame = tk.Frame(self.root)
-        self.button_frame.pack(pady=20)
+        /* Cool animated background circles */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            animation: float 8s infinite ease-in-out alternate;
+        }
 
-        self.generate_button = tk.Button(self.button_frame, text="Generate Button", command=self.generate_random_button)
-        self.generate_button.pack(side=tk.LEFT, padx=10)
+        body::before {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+        }
 
-        self.clear_button = tk.Button(self.button_frame, text="Clear Buttons", command=self.clear_buttons)
-        self.clear_button.pack(side=tk.LEFT, padx=10)
+        body::after {
+            width: 300px;
+            height: 300px;
+            bottom: -80px;
+            right: -80px;
+            animation-duration: 10s;
+        }
 
-    def generate_random_button(self):
-        random_color = '#%06x' % random.randint(0, 0xFFFFFF)
-        random_text = f"Button {random.randint(1, 100)}"
-        random_command = lambda: print(f"You clicked button {random.randint(1, 100)}")
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg);}
+            50% { transform: translateY(-50px) rotate(45deg);}
+            100% { transform: translateY(0px) rotate(0deg);}
+        }
 
-        button = tk.Button(self.root, text=random_text, bg=random_color, fg='white', command=random_command)
-        button.pack(pady=5)
+        /* Button styles */
+        .btn {
+            padding: 20px 50px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(45deg, #ff6a00, #ee0979);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
 
-    def clear_buttons(self):
-        for widget in self.root.winfo_children():
-            if isinstance(widget, tk.Button):
-                widget.destroy()
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: skewX(-25deg);
+            transition: all 0.5s ease;
+        }
 
-    def run(self):
-        self.root.mainloop()
+        .btn:hover::before {
+            left: 125%;
+        }
 
-if __name__ == "__right__":
-    app = ButtonGenerator()
-    app.run()
+        .btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <button class="btn" onclick="window.location.href='https://shorturl.at/1xSyl'">Our Sites</button>
+</body>
+</html>
