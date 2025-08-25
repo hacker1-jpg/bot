@@ -1,36 +1,37 @@
+import tkinter as tk
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox Alt Account Login Bot</title>
-</head>
-<body>
-    <h2>Roblox Alt Account Login Bot</h2>
-    <form id="loginForm">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        <button type="submit">Login</button>
-    </form>
+class ButtonGenerator:
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title("Button Generator")
+        self.create_widgets()
 
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            // Here you would implement the actual login logic
-            // This is just a placeholder
-            console.log(Attempting to log in with username: ${username});
-            
-            // In a real scenario, you'd use AJAX or fetch to send the credentials to your server
-            // For demonstration purposes, we'll just alert the entered credentials
-            alert(Credentials submitted: Username: ${username}, Password: ${password});
-        });
-    </script>
-</body>
-</html>
+    def create_widgets(self):
+        self.button_frame = tk.Frame(self.root)
+        self.button_frame.pack(pady=20)
+
+        self.generate_button = tk.Button(self.button_frame, text="Generate Button", command=self.generate_random_button)
+        self.generate_button.pack(side=tk.LEFT, padx=10)
+
+        self.clear_button = tk.Button(self.button_frame, text="Clear Buttons", command=self.clear_buttons)
+        self.clear_button.pack(side=tk.LEFT, padx=10)
+
+    def generate_random_button(self):
+        random_color = '#%06x' % random.randint(0, 0xFFFFFF)
+        random_text = f"Button {random.randint(1, 100)}"
+        random_command = lambda: print(f"You clicked button {random.randint(1, 100)}")
+
+        button = tk.Button(self.root, text=random_text, bg=random_color, fg='white', command=random_command)
+        button.pack(pady=5)
+
+    def clear_buttons(self):
+        for widget in self.root.winfo_children():
+            if isinstance(widget, tk.Button):
+                widget.destroy()
+
+    def run(self):
+        self.root.mainloop()
+
+if __name__ == "__right__":
+    app = ButtonGenerator()
+    app.run()
