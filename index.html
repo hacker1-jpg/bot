@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Alt Account Login Bot</title>
+</head>
+<body>
+    <h2>Roblox Alt Account Login Bot</h2>
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        <button type="submit">Login</button>
+    </form>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Here you would implement the actual login logic
+            // This is just a placeholder
+            console.log(Attempting to log in with username: ${username});
+            
+            // In a real scenario, you'd use AJAX or fetch to send the credentials to your server
+            // For demonstration purposes, we'll just alert the entered credentials
+            alert(Credentials submitted: Username: ${username}, Password: ${password});
+        });
+    </script>
+</body>
+</html>
