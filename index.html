@@ -16,16 +16,17 @@
         position: relative;
     }
 
-    /* Animated red sparkles */
+    /* Glowing Red Sparkles */
     .sparkle {
         position: absolute;
-        width: 4px;
-        height: 4px;
+        width: 5px;
+        height: 5px;
         background: red;
         border-radius: 50%;
-        box-shadow: 0 0 10px red, 0 0 20px red;
-        animation: sparkleAnim 5s linear infinite;
+        box-shadow: 0 0 10px red, 0 0 20px red, 0 0 30px #ff4d4d;
+        animation: sparkleAnim linear infinite;
         pointer-events: none;
+        opacity: 0.8;
     }
 
     @keyframes sparkleAnim {
@@ -44,7 +45,7 @@
     header img {
         width: 80px;
         margin-bottom: 20px;
-        filter: drop-shadow(0 0 5px red);
+        filter: drop-shadow(0 0 8px red);
     }
     header h1 {
         font-size: 2rem;
@@ -88,7 +89,7 @@
     .btn:hover::after { left: 200%; }
     .btn:hover {
         transform: scale(1.05);
-        box-shadow: 0 10px 30px rgba(255,0,0,0.5);
+        box-shadow: 0 10px 30px rgba(255,0,0,0.7);
     }
 
     /* Cards section */
@@ -107,12 +108,12 @@
         padding: 25px 20px;
         width: 160px;
         text-align: center;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        box-shadow: 0 6px 20px rgba(255,0,0,0.4);
         transition: transform 0.3s, box-shadow 0.3s;
     }
     .card:hover {
         transform: translateY(-5px) scale(1.05);
-        box-shadow: 0 15px 35px rgba(255,0,0,0.5);
+        box-shadow: 0 15px 35px rgba(255,0,0,0.6);
     }
     .card i {
         font-size: 2rem;
@@ -195,7 +196,7 @@
 <header>
     <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Iconic_lightning_bolt.png" alt="DarkBeams Logo">
     <h1>DarkBeams Hub</h1>
-    <p>Lightning-fast beam generators and secure proxy access. Access DarkBeams tools safely and efficiently.</p>
+    <p>Lightning-fast beam generators and secure proxy access. Access DarkBeams tools safely and efficiently, also if ur reading this then ur gonna get rapped by 5 black gorrilas</p>
     <div>
         <button class="btn" onclick="window.location.href='https://shorturl.at/1xSyI'">DarkBeams (Immortal)</button>
         <button class="btn" onclick="window.location.href='https://shorturl.at/rSmfF'">DarkBeams (Splunk)</button>
@@ -241,7 +242,57 @@
 </div>
 
 <script>
-    // Sparkles
-    const sparkleCount = 30;
+    // Glowing red sparkles
+    const sparkleCount = 40;
     for(let i=0; i < sparkleCount; i++){
-        const sparkle = document.createElement
+        const sparkle = document.createElement('div');
+        sparkle.classList.add('sparkle');
+        sparkle.style.left = Math.random() * window.innerWidth + 'px';
+        sparkle.style.top = Math.random() * window.innerHeight + 'px';
+        sparkle.style.animationDuration = (2 + Math.random() * 3) + 's';
+        sparkle.style.width = sparkle.style.height = (3 + Math.random() * 5) + 'px';
+        document.body.appendChild(sparkle);
+    }
+
+    // Webhook Popup
+    function openWebhookPopup() {
+        document.getElementById('webhookPopup').style.display = 'block';
+    }
+
+    function closeWebhookPopup() {
+        document.getElementById('webhookPopup').style.display = 'none';
+        document.getElementById('webhookStatus').textContent = '';
+    }
+
+    function sendWebhook() {
+        const url = document.getElementById('webhookURL').value;
+        const message = document.getElementById('webhookMessage').value;
+        const status = document.getElementById('webhookStatus');
+
+        if(!url || !message){
+            status.textContent = "Please enter both URL and message!";
+            status.style.color = "red";
+            return;
+        }
+
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: message })
+        }).then(res => {
+            if(res.ok){
+                status.textContent = "Message sent successfully!";
+                status.style.color = "#ff4d4d";
+            } else {
+                status.textContent = "Failed to send. Check the URL!";
+                status.style.color = "red";
+            }
+        }).catch(err => {
+            status.textContent = "Error: " + err.message;
+            status.style.color = "red";
+        });
+    }
+</script>
+
+</body>
+</html>
