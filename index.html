@@ -49,18 +49,19 @@
         font-size: 2rem;
         color: #4fc3f7;
         margin-bottom: 10px;
+        text-shadow: 0 0 10px #4fc3f7;
     }
     header p {
         color: #aaa;
         font-size: 1rem;
-        max-width: 300px;
-        margin: 0 auto;
+        max-width: 350px;
+        margin: 0 auto 20px auto;
     }
 
     /* Buttons */
     .btn {
         display: inline-block;
-        margin: 15px 10px;
+        margin: 10px;
         padding: 15px 35px;
         font-size: 1.1rem;
         font-weight: 600;
@@ -103,7 +104,7 @@
         background: #1b1b1b;
         border-radius: 15px;
         padding: 25px 20px;
-        width: 150px;
+        width: 160px;
         text-align: center;
         box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         transition: transform 0.3s, box-shadow 0.3s;
@@ -113,19 +114,19 @@
         box-shadow: 0 15px 35px rgba(0,0,0,0.5);
     }
     .card i {
-        font-size: 1.5rem;
+        font-size: 2rem;
         color: #ff4d4d;
         margin-bottom: 10px;
         display: block;
         animation: pulse 1.5s infinite;
     }
     .card h2 {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         margin-bottom: 5px;
         color: #4fc3f7;
     }
     .card p {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         color: #aaa;
     }
 
@@ -143,6 +144,32 @@
         position: relative;
         z-index: 2;
     }
+
+    /* Webhook Popup */
+    #webhookPopup {
+        display:none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #1b1b1b;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        z-index: 9999;
+        width: 320px;
+        text-align: center;
+    }
+    #webhookPopup h2 { color:#ff4d4d; margin-bottom:15px; text-shadow: 0 0 8px red; }
+    #webhookPopup input {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+    }
+    #webhookPopup p { margin-top:10px; font-size:0.9rem; }
 
     /* Scrollbar styling */
     body::-webkit-scrollbar {
@@ -169,6 +196,7 @@
     <div>
         <button class="btn" onclick="window.location.href='https://shorturl.at/1xSyI'">DarkBeams (Immortal)</button>
         <button class="btn" onclick="window.location.href='https://shorturl.at/rSmfF'">DarkBeams (Splunk)</button>
+        <button class="btn" onclick="openWebhookPopup()">Webhook Spammer</button>
     </div>
 </header>
 
@@ -199,8 +227,18 @@
     We are not breaking any DC rules
 </footer>
 
+<!-- Webhook Popup -->
+<div id="webhookPopup">
+    <h2>Webhook Spammer</h2>
+    <input id="webhookURL" type="text" placeholder="Webhook URL">
+    <input id="webhookMessage" type="text" placeholder="Message">
+    <button class="btn" onclick="sendWebhook()">Send</button>
+    <button class="btn" style="background:red; margin-top:10px;" onclick="closeWebhookPopup()">Close</button>
+    <p id="webhookStatus"></p>
+</div>
+
 <script>
-    // Create multiple sparkles
+    // Sparkles
     const sparkleCount = 30;
     for(let i=0; i < sparkleCount; i++){
         const sparkle = document.createElement('div');
@@ -209,6 +247,45 @@
         sparkle.style.top = Math.random() * window.innerHeight + 'px';
         sparkle.style.animationDuration = (3 + Math.random() * 3) + 's';
         document.body.appendChild(sparkle);
+    }
+
+    // Webhook Popup
+    function openWebhookPopup() {
+        document.getElementById('webhookPopup').style.display = 'block';
+    }
+
+    function closeWebhookPopup() {
+        document.getElementById('webhookPopup').style.display = 'none';
+        document.getElementById('webhookStatus').textContent = '';
+    }
+
+    function sendWebhook() {
+        const url = document.getElementById('webhookURL').value;
+        const message = document.getElementById('webhookMessage').value;
+        const status = document.getElementById('webhookStatus');
+
+        if(!url || !message){
+            status.textContent = "Please enter both URL and message!";
+            status.style.color = "red";
+            return;
+        }
+
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: message })
+        }).then(res => {
+            if(res.ok){
+                status.textContent = "Message sent successfully!";
+                status.style.color = "#4fc3f7";
+            } else {
+                status.textContent = "Failed to send. Check the URL!";
+                status.style.color = "red";
+            }
+        }).catch(err => {
+            status.textContent = "Error: " + err.message;
+            status.style.color = "red";
+        });
     }
 </script>
 
