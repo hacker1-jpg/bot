@@ -10,7 +10,7 @@
     body {
         font-family: 'Poppins', sans-serif;
         background: linear-gradient(135deg, #0d0d0d, #121212);
-        color: #fff;
+        color: #ff4d4d; /* All texts red */
         overflow-x: hidden;
         scroll-behavior: smooth;
         position: relative;
@@ -44,15 +44,16 @@
     header img {
         width: 80px;
         margin-bottom: 20px;
+        filter: drop-shadow(0 0 5px red);
     }
     header h1 {
         font-size: 2rem;
-        color: #4fc3f7;
+        color: #ff4d4d;
         margin-bottom: 10px;
-        text-shadow: 0 0 10px #4fc3f7;
+        text-shadow: 0 0 10px #ff4d4d;
     }
     header p {
-        color: #aaa;
+        color: #ff4d4d;
         font-size: 1rem;
         max-width: 350px;
         margin: 0 auto 20px auto;
@@ -65,13 +66,13 @@
         padding: 15px 35px;
         font-size: 1.1rem;
         font-weight: 600;
-        color: white;
-        background: linear-gradient(45deg, #2196f3, #00b0ff);
+        color: white; /* Button text stays white */
+        background: linear-gradient(45deg, #ff4d4d, #ff1a1a); /* red gradient */
         border: none;
         border-radius: 50px;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        box-shadow: 0 6px 20px rgba(255,0,0,0.4);
         position: relative;
         overflow: hidden;
     }
@@ -87,7 +88,7 @@
     .btn:hover::after { left: 200%; }
     .btn:hover {
         transform: scale(1.05);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        box-shadow: 0 10px 30px rgba(255,0,0,0.5);
     }
 
     /* Cards section */
@@ -111,7 +112,7 @@
     }
     .card:hover {
         transform: translateY(-5px) scale(1.05);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        box-shadow: 0 15px 35px rgba(255,0,0,0.5);
     }
     .card i {
         font-size: 2rem;
@@ -123,11 +124,11 @@
     .card h2 {
         font-size: 1.4rem;
         margin-bottom: 5px;
-        color: #4fc3f7;
+        color: #ff4d4d;
     }
     .card p {
         font-size: 0.9rem;
-        color: #aaa;
+        color: #ff4d4d;
     }
 
     @keyframes pulse {
@@ -140,7 +141,7 @@
         text-align: center;
         padding: 30px 10px;
         font-size: 0.9rem;
-        color: #777;
+        color: #ff4d4d;
         position: relative;
         z-index: 2;
     }
@@ -155,7 +156,7 @@
         background: #1b1b1b;
         padding: 30px;
         border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        box-shadow: 0 10px 30px rgba(255,0,0,0.6);
         z-index: 9999;
         width: 320px;
         text-align: center;
@@ -168,6 +169,8 @@
         border-radius: 8px;
         border: none;
         outline: none;
+        color: #ff4d4d;
+        background: #111;
     }
     #webhookPopup p { margin-top:10px; font-size:0.9rem; }
 
@@ -179,11 +182,11 @@
         background: #111;
     }
     body::-webkit-scrollbar-thumb {
-        background: #2196f3;
+        background: #ff4d4d;
         border-radius: 10px;
     }
     body::-webkit-scrollbar-thumb:hover {
-        background: #00b0ff;
+        background: #ff1a1a;
     }
 </style>
 </head>
@@ -213,7 +216,7 @@
     </div>
     <div class="card">
         <i>🌐</i>
-        <h2>80+</h2>
+        <h2>1K+</h2>
         <p>Active Beamers</p>
     </div>
     <div class="card">
@@ -233,7 +236,7 @@
     <input id="webhookURL" type="text" placeholder="Webhook URL">
     <input id="webhookMessage" type="text" placeholder="Message">
     <button class="btn" onclick="sendWebhook()">Send</button>
-    <button class="btn" style="background:red; margin-top:10px;" onclick="closeWebhookPopup()">Close</button>
+    <button class="btn" style="background:#ff1a1a; margin-top:10px;" onclick="closeWebhookPopup()">Close</button>
     <p id="webhookStatus"></p>
 </div>
 
@@ -241,53 +244,4 @@
     // Sparkles
     const sparkleCount = 30;
     for(let i=0; i < sparkleCount; i++){
-        const sparkle = document.createElement('div');
-        sparkle.classList.add('sparkle');
-        sparkle.style.left = Math.random() * window.innerWidth + 'px';
-        sparkle.style.top = Math.random() * window.innerHeight + 'px';
-        sparkle.style.animationDuration = (3 + Math.random() * 3) + 's';
-        document.body.appendChild(sparkle);
-    }
-
-    // Webhook Popup
-    function openWebhookPopup() {
-        document.getElementById('webhookPopup').style.display = 'block';
-    }
-
-    function closeWebhookPopup() {
-        document.getElementById('webhookPopup').style.display = 'none';
-        document.getElementById('webhookStatus').textContent = '';
-    }
-
-    function sendWebhook() {
-        const url = document.getElementById('webhookURL').value;
-        const message = document.getElementById('webhookMessage').value;
-        const status = document.getElementById('webhookStatus');
-
-        if(!url || !message){
-            status.textContent = "Please enter both URL and message!";
-            status.style.color = "red";
-            return;
-        }
-
-        fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: message })
-        }).then(res => {
-            if(res.ok){
-                status.textContent = "Message sent successfully!";
-                status.style.color = "#4fc3f7";
-            } else {
-                status.textContent = "Failed to send. Check the URL!";
-                status.style.color = "red";
-            }
-        }).catch(err => {
-            status.textContent = "Error: " + err.message;
-            status.style.color = "red";
-        });
-    }
-</script>
-
-</body>
-</html>
+        const sparkle = document.createElement
