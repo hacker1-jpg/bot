@@ -6,293 +6,240 @@
 <title>DarkBeams Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-        font-family: 'Poppins', sans-serif;
-        background: linear-gradient(135deg, #0d0d0d, #121212);
-        color: #ff4d4d; /* All texts red */
-        overflow-x: hidden;
-        scroll-behavior: smooth;
-        position: relative;
-    }
+/* Basic Reset */
+* { margin:0; padding:0; box-sizing:border-box; }
 
-    /* Glowing Red Sparkles */
-    .sparkle {
-        position: absolute;
-        width: 5px;
-        height: 5px;
-        background: red;
-        border-radius: 50%;
-        box-shadow: 0 0 10px red, 0 0 20px red, 0 0 30px #ff4d4d;
-        animation: sparkleAnim linear infinite;
-        pointer-events: none;
-        opacity: 0.8;
-    }
+/* Body & Background */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #0d0d0d;
+    color: #ff4d4d;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    position: relative;
+}
 
-    @keyframes sparkleAnim {
-        0% { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
-        50% { transform: translateY(-200px) translateX(50px) scale(1.5); opacity: 0.6; }
-        100% { transform: translateY(-400px) translateX(-50px) scale(0.8); opacity: 0; }
-    }
+/* Lightning animated background */
+canvas#bg { 
+    position: fixed; 
+    top:0; left:0; 
+    width:100%; 
+    height:100%; 
+    z-index:0; 
+    pointer-events:none; 
+}
 
-    /* Header section */
-    header {
-        text-align: center;
-        padding: 50px 20px 30px 20px;
-        position: relative;
-        z-index: 2;
-    }
-    header img {
-        width: 80px;
-        margin-bottom: 20px;
-        filter: drop-shadow(0 0 8px red);
-    }
-    header h1 {
-        font-size: 2rem;
-        color: #ff4d4d;
-        margin-bottom: 10px;
-        text-shadow: 0 0 10px #ff4d4d;
-    }
-    header p {
-        color: #ff4d4d;
-        font-size: 1rem;
-        max-width: 350px;
-        margin: 0 auto 20px auto;
-    }
+/* Header */
+header {
+    text-align: center;
+    padding: 60px 20px 40px;
+    position: relative;
+    z-index: 2;
+}
+header img {
+    width: 90px;
+    margin-bottom: 20px;
+    animation: pulseLogo 2s infinite;
+}
+header h1 {
+    font-size: 2.5rem;
+    color: #ff4d4d;
+    text-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff1a1a;
+    margin-bottom: 10px;
+}
+header p {
+    color: #ff4d4d;
+    font-size: 1.1rem;
+    max-width: 400px;
+    margin: 0 auto 20px auto;
+    text-shadow: 0 0 5px red;
+}
 
-    /* Buttons */
-    .btn {
-        display: inline-block;
-        margin: 10px;
-        padding: 15px 35px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: white; /* Button text stays white */
-        background: linear-gradient(45deg, #ff4d4d, #ff1a1a); /* red gradient */
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 6px 20px rgba(255,0,0,0.4);
-        position: relative;
-        overflow: hidden;
-    }
-    .btn::after {
-        content: '';
-        position: absolute;
-        top: 0; left: -100%;
-        width: 100%; height: 100%;
-        background: rgba(255,255,255,0.2);
-        transform: skewX(-20deg);
-        transition: all 0.5s;
-    }
-    .btn:hover::after { left: 200%; }
-    .btn:hover {
-        transform: scale(1.05);
-        box-shadow: 0 10px 30px rgba(255,0,0,0.7);
-    }
+/* Buttons */
+.btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 15px 35px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(45deg, #ff4d4d, #ff1a1a);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(255,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+}
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: rgba(255,255,255,0.2);
+    transform: skewX(-20deg);
+    transition: all 0.5s;
+}
+.btn:hover::after { left: 200%; }
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(255,0,0,0.8);
+}
 
-    /* Cards section */
-    .cards {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 30px 10px;
-        gap: 15px;
-        position: relative;
-        z-index: 2;
-    }
-    .card {
-        background: #1b1b1b;
-        border-radius: 15px;
-        padding: 25px 20px;
-        width: 160px;
-        text-align: center;
-        box-shadow: 0 6px 20px rgba(255,0,0,0.4);
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .card:hover {
-        transform: translateY(-5px) scale(1.05);
-        box-shadow: 0 15px 35px rgba(255,0,0,0.6);
-    }
-    .card i {
-        font-size: 2rem;
-        color: #ff4d4d;
-        margin-bottom: 10px;
-        display: block;
-        animation: pulse 1.5s infinite;
-    }
-    .card h2 {
-        font-size: 1.4rem;
-        margin-bottom: 5px;
-        color: #ff4d4d;
-    }
-    .card p {
-        font-size: 0.9rem;
-        color: #ff4d4d;
-    }
+/* Cards Section */
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px 10px;
+    perspective: 1000px;
+}
+.card {
+    background: #1b1b1b;
+    border-radius: 15px;
+    padding: 25px 20px;
+    width: 170px;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(255,0,0,0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+    transform: rotateY(15deg) rotateX(10deg) translateY(-10px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(255,0,0,0.7);
+}
+.card i {
+    font-size: 2rem;
+    color: #ff4d4d;
+    margin-bottom: 10px;
+    display: block;
+    animation: pulse 1.5s infinite;
+}
+.card h2 { color: #ff4d4d; font-size:1.5rem; margin-bottom:5px; }
+.card p { color:#ff4d4d; font-size:0.95rem; }
 
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.2); }
-    }
+/* Footer */
+footer {
+    text-align: center;
+    padding: 30px 10px;
+    font-size: 0.95rem;
+    color: #ff4d4d;
+    text-shadow: 0 0 5px red, 0 0 10px #ff1a1a;
+    position: relative;
+    z-index: 2;
+    animation: flicker 2s infinite;
+}
 
-    /* Footer */
-    footer {
-        text-align: center;
-        padding: 30px 10px;
-        font-size: 0.9rem;
-        color: #ff4d4d;
-        position: relative;
-        z-index: 2;
-    }
+/* Animations */
+@keyframes pulse { 0%,100%{scale:1} 50%{scale:1.2} }
+@keyframes pulseLogo { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+@keyframes flicker {
+  0%,19%,21%,23%,25%,54%,56%,100%{opacity:1;}
+  20%,22%,24%,55%{opacity:0.4;}
+}
 
-    /* Webhook Popup */
-    #webhookPopup {
-        display:none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: #1b1b1b;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(255,0,0,0.6);
-        z-index: 9999;
-        width: 320px;
-        text-align: center;
-    }
-    #webhookPopup h2 { color:#ff4d4d; margin-bottom:15px; text-shadow: 0 0 8px red; }
-    #webhookPopup input {
-        width: 90%;
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 8px;
-        border: none;
-        outline: none;
-        color: #ff4d4d;
-        background: #111;
-    }
-    #webhookPopup p { margin-top:10px; font-size:0.9rem; }
+/* Webhook Popup */
+#webhookPopup {
+    display:none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background:#1b1b1b;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(255,0,0,0.7);
+    width:350px;
+    z-index:9999;
+    text-align:center;
+}
+#webhookPopup h2 { color:#ff4d4d; text-shadow:0 0 10px red; margin-bottom:15px; }
+#webhookPopup input {
+    width: 90%; padding:10px; margin:10px 0;
+    border-radius:8px; border:none; outline:none;
+    background:#111; color:#ff4d4d;
+}
+#webhookPopup p { margin-top:10px; font-size:0.9rem; }
 
-    /* Scrollbar styling */
-    body::-webkit-scrollbar {
-        width: 8px;
-    }
-    body::-webkit-scrollbar-track {
-        background: #111;
-    }
-    body::-webkit-scrollbar-thumb {
-        background: #ff4d4d;
-        border-radius: 10px;
-    }
-    body::-webkit-scrollbar-thumb:hover {
-        background: #ff1a1a;
-    }
+/* Scrollbar */
+body::-webkit-scrollbar { width:8px; }
+body::-webkit-scrollbar-track { background:#111; }
+body::-webkit-scrollbar-thumb { background:#ff4d4d; border-radius:10px; }
+body::-webkit-scrollbar-thumb:hover { background:#ff1a1a; }
+
 </style>
 </head>
 <body>
 
+<canvas id="bg"></canvas>
+
 <header>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Iconic_lightning_bolt.png" alt="DarkBeams Logo">
-    <h1>DarkBeams Hub</h1>
-    <p>Lightning-fast beam generators and secure proxy access. Access DarkBeams tools safely and efficiently, also if ur reading this then ur gonna get rapped by 5 black gorrilas</p>
-    <div>
-        <button class="btn" onclick="window.location.href='https://shorturl.at/1xSyI'">DarkBeams (Immortal)</button>
-        <button class="btn" onclick="window.location.href='https://shorturl.at/rSmfF'">DarkBeams (Splunk)</button>
-        <button class="btn" onclick="openWebhookPopup()">Webhook Spammer</button>
-    </div>
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Iconic_lightning_bolt.png" alt="DarkBeams Logo">
+<h1>DarkBeams Hub</h1>
+<p>Lightning-fast beam generators and secure proxy access. Access DarkBeams tools safely and efficiently.</p>
+<div>
+<button class="btn" onclick="window.location.href='https://shorturl.at/1xSyI'">DarkBeams (Immortal)</button>
+<button class="btn" onclick="window.location.href='https://shorturl.at/rSmfF'">DarkBeams (Splunk)</button>
+<button class="btn" onclick="openWebhookPopup()">Webhook Spammer</button>
+</div>
 </header>
 
 <section class="cards">
-    <div class="card">
-        <i>⚡</i>
-        <h2>99.9%</h2>
-        <p>Beam Uptime</p>
-    </div>
-    <div class="card">
-        <i>📈</i>
-        <h2>98.7%</h2>
-        <p>Beam Success</p>
-    </div>
-    <div class="card">
-        <i>🌐</i>
-        <h2>90+</h2>
-        <p>Active Beamers</p>
-    </div>
-    <div class="card">
-        <i>⏱️</i>
-        <h2>&lt;1.2s</h2>
-        <p>Beam Speed</p>
-    </div>
+<div class="card"><i>⚡</i><h2>99.9%</h2><p>Beam Uptime</p></div>
+<div class="card"><i>📈</i><h2>98.7%</h2><p>Beam Success</p></div>
+<div class="card"><i>🌐</i><h2>1K+</h2><p>Active Beamers</p></div>
+<div class="card"><i>⏱️</i><h2>&lt;1.2s</h2><p>Beam Speed</p></div>
 </section>
 
-<footer>
-    We are not breaking any DC rules
-</footer>
+<footer>We are not breaking any DC rules</footer>
 
-<!-- Webhook Popup -->
 <div id="webhookPopup">
-    <h2>Webhook Spammer</h2>
-    <input id="webhookURL" type="text" placeholder="Webhook URL">
-    <input id="webhookMessage" type="text" placeholder="Message">
-    <button class="btn" onclick="sendWebhook()">Send</button>
-    <button class="btn" style="background:#ff1a1a; margin-top:10px;" onclick="closeWebhookPopup()">Close</button>
-    <p id="webhookStatus"></p>
+<h2>Webhook Spammer</h2>
+<input id="webhookURL" type="text" placeholder="Webhook URL">
+<input id="webhookMessage" type="text" placeholder="Message">
+<button class="btn" onclick="sendWebhook()">Send</button>
+<button class="btn" style="background:#ff1a1a;margin-top:10px;" onclick="closeWebhookPopup()">Close</button>
+<p id="webhookStatus"></p>
 </div>
 
 <script>
-    // Glowing red sparkles
-    const sparkleCount = 40;
-    for(let i=0; i < sparkleCount; i++){
-        const sparkle = document.createElement('div');
-        sparkle.classList.add('sparkle');
-        sparkle.style.left = Math.random() * window.innerWidth + 'px';
-        sparkle.style.top = Math.random() * window.innerHeight + 'px';
-        sparkle.style.animationDuration = (2 + Math.random() * 3) + 's';
-        sparkle.style.width = sparkle.style.height = (3 + Math.random() * 5) + 'px';
-        document.body.appendChild(sparkle);
-    }
+// Lightning background
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+let bolts = [];
+function Bolt(){ 
+    this.x=Math.random()*canvas.width; 
+    this.y=0; 
+    this.length=50+Math.random()*100;
+    this.speed=4+Math.random()*4; 
+    this.opacity=Math.random();
+}
+Bolt.prototype.update = function(){
+    this.y += this.speed;
+    if(this.y>canvas.height){this.y=0; this.x=Math.random()*canvas.width;}
+}
+Bolt.prototype.draw=function(){
+    ctx.strokeStyle = 'rgba(255,77,77,'+this.opacity+')';
+    ctx.lineWidth=2;
+    ctx.beginPath();
+    ctx.moveTo(this.x,this.y);
+    ctx.lineTo(this.x,this.y+this.length);
+    ctx.stroke();
+}
+for(let i=0;i<50;i++){bolts.push(new Bolt());}
+function animate(){
+    ctx.fillStyle='rgba(13,13,13,0.2)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    bolts.forEach(b=>{b.update(); b.draw();});
+    requestAnimationFrame(animate);
+}
+animate();
 
-    // Webhook Popup
-    function openWebhookPopup() {
-        document.getElementById('webhookPopup').style.display = 'block';
-    }
-
-    function closeWebhookPopup() {
-        document.getElementById('webhookPopup').style.display = 'none';
-        document.getElementById('webhookStatus').textContent = '';
-    }
-
-    function sendWebhook() {
-        const url = document.getElementById('webhookURL').value;
-        const message = document.getElementById('webhookMessage').value;
-        const status = document.getElementById('webhookStatus');
-
-        if(!url || !message){
-            status.textContent = "Please enter both URL and message!";
-            status.style.color = "red";
-            return;
-        }
-
-        fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: message })
-        }).then(res => {
-            if(res.ok){
-                status.textContent = "Message sent successfully!";
-                status.style.color = "#ff4d4d";
-            } else {
-                status.textContent = "Failed to send. Check the URL!";
-                status.style.color = "red";
-            }
-        }).catch(err => {
-            status.textContent = "Error: " + err.message;
-            status.style.color = "red";
-        });
-    }
-</script>
-
-</body>
-</html>
+// Webhook Popup
+function openWebhookPopup(){document.getElementById('webhookPopup').style.display='block';}
+function closeWebhookPopup(){document.getElementById('webhookPopup').style.display='none';document.getElementById('webhookStatus').textContent='';}
+function sendWebhook(){
+    const url=document.getElementById('web
